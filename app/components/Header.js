@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useRouter } from 'next/navigation';
@@ -8,13 +8,20 @@ const Header = () => {
 
   const router = useRouter();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const loggedIn = sessionStorage.getItem('loggedin')
-  const user = sessionStorage.getItem('username')
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState('')
+  
+  useEffect(() => {
+    setLoggedIn(window.sessionStorage.getItem('loggedin') || false)
+    setUser(window.sessionStorage.getItem('username') || '')
+  }, [])
 
   const logout = async () => {
     try {
-      sessionStorage.removeItem('loggedin')
-      sessionStorage.removeItem('username')
+      window.sessionStorage.removeItem('loggedin')
+      window.sessionStorage.removeItem('username')
+      setLoggedIn(false)
+      setUser('')
       setDropdownOpen(false)
       router.push('/')
     } catch (error) {

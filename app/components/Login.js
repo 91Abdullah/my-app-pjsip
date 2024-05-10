@@ -2,16 +2,17 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../axiosInstance';
 import { useRouter } from 'next/navigation';
-
+import { ArrowPathIcon } from "@heroicons/react/24/outline"
 
 const Login = () => {
     const router = useRouter(); // Initialize router
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false)
 
     const checkLogin = async () => {
         try {
-            const loggedIn = sessionStorage.getItem('loggedin');
+            const loggedIn = window.sessionStorage.getItem('loggedin');
             if (loggedIn) {
                 router.push('/cdr');
             } else {
@@ -25,8 +26,7 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Create base64-encoded string of username:password
-        const credentials = btoa(`${username}:${password}`);
+        setLoading(true)
 
         try {
             const response = await axiosInstance.post('/new_login', {
@@ -36,9 +36,9 @@ const Login = () => {
 
             if (response) {
                 // If login is successful, redirect to /cdrs/
-                sessionStorage.setItem('username', username)
-                sessionStorage.setItem('loggedin', true)
-                window.location.reload();
+                window.sessionStorage.setItem('username', username)
+                window.sessionStorage.setItem('loggedin', true)
+                window.location.reload()
             }
         } catch (error) {
             // Handle login error
@@ -47,6 +47,8 @@ const Login = () => {
             } else {
                 console.error(error);
             }
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -55,7 +57,12 @@ const Login = () => {
     }, [])
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-200">
+        <div className="relative flex items-center justify-center h-screen bg-gray-200">
+            {loading && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <ArrowPathIcon className="animate-spin h-20 w-20 text-blue-500" />
+                </div>
+            )}
             <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">

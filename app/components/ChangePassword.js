@@ -11,7 +11,7 @@ const ChangePassword = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         // Add logic to handle password change
-        const username = sessionStorage.getItem('username')
+        const username = window.sessionStorage.getItem('username')
 
         if (newPassword !== confirmPassword) {
             alert('Passwords do not match');

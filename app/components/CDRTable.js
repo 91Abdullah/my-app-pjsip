@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import SearchForm from "./SearchForm"
 import axiosInstance from "../../axiosInstance";
-import { ArrowDownTrayIcon } from "@heroicons/react/24/outline"
+import { ArrowDownTrayIcon, ArrowPathIcon } from "@heroicons/react/24/outline"
 
 const CDRTable = () => {
   const [cdrs, setCdrs] = useState([]);
@@ -51,7 +51,7 @@ const CDRTable = () => {
   };
 
   const fetchCDRs = async (formData) => {
-    let user = sessionStorage.getItem('username')
+    let user = window.sessionStorage.getItem('username')
     //console.log(user)
     setLoading(true);
     try {
@@ -86,8 +86,8 @@ const CDRTable = () => {
           </audio>
         </div>
       )}
-      <table className="table-auto w-full">
-        <thead>
+      <table className="mt-4 table-auto min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
           <tr>
             <th className="px-4 py-2">Accountcode</th>
             <th className="px-4 py-2">Caller</th>
@@ -98,7 +98,7 @@ const CDRTable = () => {
             <th className="px-4 py-2">Disposition</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-white divide-y divide-gray-200">
           {cdrs.map((cdr, index) => (
             <tr key={index}>
               <td className="border px-4 py-2">{cdr.accountcode}</td>
@@ -117,6 +117,11 @@ const CDRTable = () => {
           ))}
         </tbody>
       </table>
+      {loading && (
+        <div className="p-20 flex justify-center items-center">
+          <ArrowPathIcon className="animate-spin h-20 w-20 text-blue-500" />
+        </div>
+      )}
     </div>
   );
 };

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import axiosInstance from "../../axiosInstance";
+import { ArrowPathIcon } from "@heroicons/react/24/solid"
 
 const AccountsTable = () => {
 
@@ -71,6 +72,11 @@ const AccountsTable = () => {
                     ))}
                 </tbody>
             </table>
+            {loading && (
+                <div className="flex justify-center items-center">
+                <ArrowPathIcon className="animate-spin h-20 w-20 text-blue-500" />
+                </div>
+            )}
             {/* Pagination controls */}
             <div className="flex justify-center mt-4">
                 {/* Render page numbers */}
